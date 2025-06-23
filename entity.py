@@ -1,3 +1,5 @@
+'''实体类定义'''
+
 """智能体类"""
 class Agent:
     def __init__(self, id, start, goal):
@@ -8,6 +10,7 @@ class Agent:
     # 设置路径
     def set_path(self, path):
         self.path = path
+    # 重载
     def __eq__(self, other):
         return self.id == other.id and self.start == other.start and self.goal == other.goal
     def __hash__(self):
@@ -54,6 +57,8 @@ class VertexConstraint:
         self.agent_id = agent_id # 约束智能体ID
         self.location = location # 约束位置
         self.time = time # 约束时间
+
+    # 重载
     def __eq__(self, other):
         if not isinstance(other, VertexConstraint):
             return False
@@ -68,6 +73,8 @@ class EdgeConstraint:
         self.begin = begin # 约束起点
         self.end = end # 约束终点(time到达)
         self.time = time # 约束时间
+
+    # 重载
     def __eq__(self, other):
         if not isinstance(other, EdgeConstraint):
             return False
@@ -75,3 +82,23 @@ class EdgeConstraint:
             and self.begin == other.begin and self.end == other.end
     # def __hash__(self):
     #     return hash(str(self.agent_id) + str(self.time) + str(self.begin) + str(self.end))
+
+"""解决方案类"""
+class Solution:
+    def __init__(self):
+        self.paths = [] # 路径列表
+    # 设置路径
+    def add_path(self, path):
+        self.paths.append(path)
+
+"""约束列表类"""
+class Constraints:
+    def __init__(self):
+        self.vertex_constraints = [] # 顶点约束列表
+        self.edge_constraints = [] # 边约束列表
+    # 添加约束
+    def add_constraint(self, constraint):
+        if(isinstance(constraint, VertexConstraint)):
+            self.vertex_constraints.append(constraint)
+        elif(isinstance(constraint, EdgeConstraint)):
+            self.edge_constraints.append(constraint)

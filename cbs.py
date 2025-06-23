@@ -125,7 +125,7 @@ class CBS:
                 path = self.a_star.search(agent, agent_constraints)
                 
                 if path is None: # 无解
-                    print("agent"+str(agent.id)+"无解决方案")
+                    print(str(agent.id)+"在当前节点约束下无解决方案")
                     return None
                 solution.add_path(path)
 
@@ -154,7 +154,7 @@ class CBS:
                     path = self.a_star.search(current_agent, current_agent_constraints)
                     
                     if path is None: # 无解
-                        print("agent"+str(current_agent_id)+"无解决方案")
+                        print(str(current_agent_id)+"在当前节点约束下无解决方案")
                         return None
                     else:
                         solution.paths[current_agent_index] = path # 更新该智能体的路径解决方案

@@ -1,32 +1,28 @@
 from cbs import *
 from a_star import *
+from visualize import *
 import yaml
+import argparse
 
 """主函数"""
 def main():
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument("param", help="包含地图和障碍物的输入文件")
-    # parser.add_argument("output", help="输出调度文件")
-    # args = parser.parse_args()
-
-    # # 命令行读取输入文件
-    # with open(args.param, 'r') as param_file:
-    #     try:
-    #         param = yaml.load(param_file, Loader=yaml.FullLoader)
-    #     except yaml.YAMLError as exc:
-    #         print(exc)
-
-    # 指定输入和输出文件路径"map/8x8/map_8by8_obst12_agents8_ex29.yaml"
-    input_file = "map/8x8/map_8by8_obst12_agents8_ex29.yaml"  # 指定输入文件路径
+    # 默认文件路径  "map/8x8/map_8by8_obst12_agents8_ex1.yaml" "map/32x32/map_32by32_obst204_agents30_ex1.yaml"
+    input_file = "map/8x8/map_8by8_obst12_agents8_ex1.yaml"  # 指定输入文件路径
     output_file = "output.yaml"  # 指定输出文件路径
-    
-    # 读取输入文件
-    with open(input_file, 'r') as param_file:
+
+    # 创建ArgumentParser对象，解析命令行参数
+    parser = argparse.ArgumentParser() 
+    parser.add_argument("--input", help = "输入文件（包含地图、智能体、障碍物等信息）", default = input_file)
+    parser.add_argument("--output", help = "输出文件（解决方案，含规划的路径和总代价）", default = output_file)
+    # 解析命令行参数
+    args = parser.parse_args() 
+
+    # 命令行读取输入文件
+    with open(args.input, 'r') as param_file: # 打开输入文件(只读)
         try:
-            param = yaml.load(param_file, Loader=yaml.FullLoader)
+            param = yaml.load(param_file, Loader=yaml.FullLoader) # 解析yaml文件
         except yaml.YAMLError as exc:
             print(exc)
-            return
 
     # 提取参数
     dimension = param["map"]["dimensions"]
@@ -44,9 +40,11 @@ def main():
         output = dict()
         output["schedule"] = generate_plan(solution_node.solution)
         output["cost"] = solution_node.cost
-        #with open(args.output, 'w') as output_yaml:
-        with open(output_file, 'w') as output_yaml:
+        with open(args.output, 'w') as output_yaml:
             yaml.safe_dump(output, output_yaml)
+        # 可视化
+        animation = Animation(param, output)
+        animation.show()
     else: # 无解
         print("未找到解决方案")
 

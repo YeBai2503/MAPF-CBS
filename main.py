@@ -7,7 +7,7 @@ import argparse
 """主函数"""
 def main():
     # 默认文件路径  "map/8x8/map_8by8_obst12_agents8_ex1.yaml" "map/32x32/map_32by32_obst204_agents30_ex1.yaml"
-    input_file = "map/8x8/map_8by8_obst12_agents8_ex1.yaml"  # 指定输入文件路径
+    input_file = "map/32x32/map_32by32_obst204_agents20_ex2.yaml"  # 指定输入文件路径
     output_file = "output.yaml"  # 指定输出文件路径
 
     # 创建ArgumentParser对象，解析命令行参数

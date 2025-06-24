@@ -4,6 +4,7 @@ from entity import *
 from ct_node import CTNode
 
 from copy import deepcopy
+import heapq
 import sys
 
 """CBS类"""
@@ -90,8 +91,8 @@ class CBS:
             best_node.right_child.set_solution(self.get_solution(best_node.right_child))
             
             # 添加子节点进open_list
-            self.open_list.append(best_node.left_child)
-            self.open_list.append(best_node.right_child)
+            heapq.heappush(self.open_list, best_node.left_child)
+            heapq.heappush(self.open_list, best_node.right_child)
 
         # 边冲突
         elif(isinstance(conflict, EdgeConflict)):
@@ -107,8 +108,8 @@ class CBS:
             best_node.right_child.set_solution(self.get_solution(best_node.right_child))
             
             # 添加子节点进open_list
-            self.open_list.append(best_node.left_child)
-            self.open_list.append(best_node.right_child)
+            heapq.heappush(self.open_list, best_node.left_child)
+            heapq.heappush(self.open_list, best_node.right_child)
         return None
 
     """获取解决方案"""
@@ -166,7 +167,7 @@ def cbs_main(agents, size, obstacles):
     if(not cbs.check_problem()): # 检查问题合理性
         return None
     root = CTNode([], None) # 根节点
-    cbs.open_list.append(root) # 添加根节点
+    heapq.heappush(cbs.open_list, root) # 添加根节点
     root.set_solution(cbs.get_solution(root))
 
     # 主循环
@@ -179,8 +180,7 @@ def cbs_main(agents, size, obstacles):
         sys.stdout.write(f"\r————————————进度: 第{count}个节点————————————")
         sys.stdout.flush()
 
-        best_node = min(cbs.open_list) # 最小成本节点(最佳优先搜索)
-        cbs.open_list.remove(best_node) # 从待扩展节点列表中移除
+        best_node = heapq.heappop(cbs.open_list) # 最小成本节点(最佳优先搜索)
         cbs.closed_list.append(best_node) # 添加到已扩展节点列表
 
         # 冲突检测
@@ -188,8 +188,8 @@ def cbs_main(agents, size, obstacles):
 
         # 无解节点
         if conflict == 404: # 无解节点
-            cbs.open_list.remove(best_node) # 从待扩展节点列表中移除
-            cbs.closed_list.append(best_node) # 添加到已扩展节点列表
+            # cbs.open_list.remove(best_node) # 从待扩展节点列表中移除
+            # cbs.closed_list.append(best_node) # 添加到已扩展节点列表
             continue
         # 有冲突，解决冲突
         elif(conflict):

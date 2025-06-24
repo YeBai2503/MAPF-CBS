@@ -1,5 +1,6 @@
 """A*搜索算法，用于CBS的底层搜索"""
 from entity import *
+import heapq
 
 """Step类（存储路径节点的信息）"""
 class Step():
@@ -110,7 +111,7 @@ class A_Star():
         self.begin = agent.start
         self.end = agent.goal
         open_list = [] # 待遍历节点
-        close_list = [] # 已遍历节点
+        close_list = set() # 已遍历节点
         self.vertex_constraints = [] # 清空顶点约束集
         self.edge_constraints = [] # 清空边约束集
         max_t = 0 # 最大时间(用于到达终点后仍被碰撞)
@@ -126,7 +127,7 @@ class A_Star():
         # 初始化起点
         start = Step(self.begin[0],self.begin[1], None, 0)
         start.set_priority(0, 0) # 设置优先级为最高0
-        open_list.append(start)
+        heapq.heappush(open_list, start)
 
         # 开始搜索
         count = 0
@@ -136,7 +137,7 @@ class A_Star():
                 print("A*搜索超时,结束")
                 return None
             
-            current_step = min(open_list) # 最高优先级节点
+            current_step = heapq.heappop(open_list) # 最高优先级节点
             # 到达终点
             if current_step.x == self.end[0] and current_step.y == self.end[1] and current_step.time >= max_t:
                 # 构建路径
@@ -146,8 +147,7 @@ class A_Star():
 
             # 未到达终点
             else:
-                open_list.remove(current_step)
-                close_list.append(current_step)
+                close_list.add(current_step)
                 neighbors = self.get_neighbors(current_step) # 获取可用邻居节点
                 for neighbor in neighbors:
                     # 遍历过
@@ -156,5 +156,5 @@ class A_Star():
                     # 未遍历
                     if neighbor not in open_list:
                         neighbor.set_priority(current_step.g + 1, self.h(neighbor))
-                        open_list.append(neighbor)
+                        heapq.heappush(open_list, neighbor)
         return None

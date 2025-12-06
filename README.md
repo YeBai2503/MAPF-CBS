@@ -120,3 +120,4 @@ schedule:  # 路径规划方案
    * [基于冲突搜索算法的多机器人路径规划](https://kns.cnki.net/kcms2/article/abstract?v=C4JADW50D8uV0BtqG0j66lwxJEaz11vl6RpKS7db8KXc_kX8XTjaqqhu_xtwzgqfSnMD9SMQeDPYqQJ9EM7pgFlAyz_KcrHr9ojq6obDTMUrIBzeJrreSgQUjUc2rkcL5VeuRzlwYjKGLy--CwSO7e6WXD0Gkvbe_SpcLnsX4v8=&uniplatform=NZKPT)
    
    * [On the Completeness of Conflict-Based Search: Temporally-Relative Duplicate Pruning](https://arxiv.org/html/2408.09028?_immersive_translate_auto_translate=1)
+* 可视化代码及地图数据参考于https://github.com/atb033/multi_agent_path_planning
